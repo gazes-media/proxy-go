@@ -16,7 +16,6 @@ func main() {
 		urlQuery := r.URL.Query()["url"]
 		if len(urlQuery) > 0 {
 			oldUrl := urlQuery[0]
-			fmt.Println("url: " + oldUrl)
 			defaultHeaders := http.Header{}
 			defaultHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
 			defaultHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
@@ -26,7 +25,7 @@ func main() {
 			defaultHeaders.Add("Cache-Control", "max-age=0")
 			defaultHeaders.Add("TE", "Trailers")
 			// check if the oldUrl contains a valid website
-			if !strings.Contains(oldUrl, "http") || !strings.Contains(oldUrl, "https") {
+			if !strings.HasPrefix(oldUrl, "http") || !strings.HasPrefix(oldUrl, "https") {
 				returnErr(w)
 				// except any possible to the next step
 				return
@@ -34,7 +33,6 @@ func main() {
 			client := &http.Client{}
 			req, err := http.NewRequest("GET", oldUrl, nil)
 			if err != nil {
-				fmt.Printf("%s", err)
 				returnErr(w)
 			}
 			if strings.Contains(oldUrl, "https://scansmangas.me") {
@@ -44,7 +42,7 @@ func main() {
 			req.Header = defaultHeaders
 			resp, err := client.Do(req)
 			if err != nil {
-				fmt.Printf("%s", err)
+				fmt.Printf("%v", err.Error())
 				returnErr(w)
 			}
 			defer resp.Body.Close()
@@ -59,7 +57,6 @@ func main() {
 			w.WriteHeader(resp.StatusCode)
 			bodyToPrint, err := io.ReadAll(resp.Body)
 			if err != nil {
-				fmt.Printf("%s", err)
 				returnErr(w)
 			}
 
