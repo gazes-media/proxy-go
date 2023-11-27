@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 # source code into the container.
 RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,target=. \
-    CGO_ENABLED=0 go build -o /bin/server .
+    CGO_ENABLED=0 go build -o /bin/server ./cmd/main.go
 
 ################################################################################
 # Create a new stage for running the application that contains the minimal
@@ -44,10 +44,10 @@ FROM alpine:latest AS final
 # Leverage a cache mount to /var/cache/apk/ to speed up subsequent builds.
 RUN --mount=type=cache,target=/var/cache/apk \
     apk --update add \
-        ca-certificates \
-        tzdata \
-        && \
-        update-ca-certificates
+    ca-certificates \
+    tzdata \
+    && \
+    update-ca-certificates
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
