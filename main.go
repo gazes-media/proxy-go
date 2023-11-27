@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 )
 
@@ -90,7 +91,12 @@ func main() {
 		}
 	})
 
-	log.Fatal(http.ListenAndServe(":5656", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "2545"
+	}
+
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 
 }
 
