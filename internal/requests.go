@@ -36,9 +36,6 @@ func ForwardResponse(w http.ResponseWriter, resp *http.Response) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.WriteHeader(resp.StatusCode)
-
 	if _, err := w.Write(body); err != nil {
 		fmt.Println("Error writing response:", err)
 	}

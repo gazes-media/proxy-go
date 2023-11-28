@@ -43,6 +43,9 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(resp.StatusCode)
+
 	if strings.Contains(queryURL, ".m3u8") {
 		modifiedM3U8, err := ProcessM3U8(resp.Body)
 		if err != nil {
