@@ -39,6 +39,7 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Write(modifiedM3U8)
 		return
 	}
