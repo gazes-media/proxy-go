@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -25,6 +26,6 @@ func proxyM3U8(w http.ResponseWriter, body io.Reader) {
 	}
 }
 
-func proxyURL(url string) string {
-	return "https://proxy.ketsuna.com/?url=" + url
+func proxyURL(urlToProxy string) string {
+	return "https://proxy.ketsuna.com/?url=" + url.QueryEscape(urlToProxy)
 }
