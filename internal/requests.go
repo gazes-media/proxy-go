@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"slices"
 )
 
 // The function `GetAndHandleGETRequest` sends a GET request to a specified URL and returns the
@@ -35,16 +34,6 @@ func ForwardResponse(w http.ResponseWriter, resp *http.Response) {
 	if err != nil {
 		http.Error(w, "Error reading response", http.StatusInternalServerError)
 		return
-	}
-
-	for key, values := range resp.Header {
-		if slices.Contains([]string{"Access-Control-Allow-Origin", "Server", "Content-Encoding"}, key) {
-			continue
-		}
-
-		for _, value := range values {
-			w.Header().Add(key, value)
-		}
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

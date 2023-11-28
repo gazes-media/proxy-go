@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 )
 
@@ -32,8 +33,14 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if strings.Contains(queryURL, ".m3u8") || strings.Contains(queryURL, ".ts") {
-		w.Header().Set("Content-Type", "application/octet-stream")
+	for key, values := range resp.Header {
+		if slices.Contains([]string{"Access-Control-Allow-Origin", "Server", "Content-Encoding"}, key) {
+			continue
+		}
+
+		for _, value := range values {
+			w.Header().Add(key, value)
+		}
 	}
 
 	if strings.Contains(queryURL, ".m3u8") {
