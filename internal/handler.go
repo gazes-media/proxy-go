@@ -37,7 +37,8 @@ func ProxyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp.Header.Set("Access-Control-Allow-Origin", "*")
+	copyResponseHeaders(w, resp.Header)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	if strings.Contains(urlString, ".m3u8") {
 		proxyM3U8(w, resp.Body)
@@ -46,6 +47,14 @@ func ProxyHandler(w http.ResponseWriter, r *http.Request) {
 
 	copyResponseBody(w, resp.Body)
 
+}
+
+func copyResponseHeaders(w http.ResponseWriter, header http.Header) {
+	for key, values := range header {
+		for _, value := range values {
+			w.Header().Set(key, value)
+		}
+	}
 }
 
 func copyResponseBody(w http.ResponseWriter, body io.ReadCloser) {
