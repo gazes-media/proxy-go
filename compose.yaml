@@ -1,9 +1,0 @@
-services:
-  server:
-    build:
-      context: .
-      target: final
-    ports:
-      - 2545:2545
-    environment:
-      - PORT=2545

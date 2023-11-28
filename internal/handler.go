@@ -37,6 +37,8 @@ func ProxyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	resp.Header.Set("Access-Control-Allow-Origin", "*")
+
 	if strings.Contains(urlString, ".m3u8") {
 		proxyM3U8(w, resp.Body)
 		return
