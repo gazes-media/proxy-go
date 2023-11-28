@@ -32,14 +32,17 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if strings.Contains(queryURL, "m3u8") {
+	if strings.Contains(queryURL, ".m3u8") || strings.Contains(queryURL, ".ts") {
+		w.Header().Set("Content-Type", "application/octet-stream")
+	}
+
+	if strings.Contains(queryURL, ".m3u8") {
 		modifiedM3U8, err := ProcessM3U8(resp.Body)
 		if err != nil {
 			http.Error(w, "Failed to parse the m3u8 file", http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/octet-stream")
 		w.Write(modifiedM3U8)
 		return
 	}
