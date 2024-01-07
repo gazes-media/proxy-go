@@ -10,6 +10,8 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 
 FROM alpine:latest AS final
 
+RUN apk add build-base
+
 RUN --mount=type=cache,target=/var/cache/apk \
     apk --update add \
     ca-certificates \
