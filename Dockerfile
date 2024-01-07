@@ -6,7 +6,7 @@ WORKDIR /src
 
 RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,target=. \
-    CGO_ENABLED=0 go build -a -gcflags=all="-l -B" -ldflags "-w -s" -o /bin/server ./cmd/main.go
+    CGO_ENABLED=0 go build -ldflags "-w -s" -o /bin/server ./cmd/main.go
 
 FROM alpine:latest AS final
 
